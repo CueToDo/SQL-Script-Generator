@@ -90,6 +90,7 @@
       <DependentUpon>FormGenerateSQLScripts.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Functions.vb" />
     <Compile Include="ScriptGenerator.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -130,12 +131,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Repo.DNSD.Toolkit\DNSD.Functions\DNSD.Functions.vbproj">
-      <Project>{d8658354-7c10-4219-a9c8-e7623ee41e48}</Project>
-      <Name>DNSD.Functions</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
