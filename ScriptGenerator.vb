@@ -62,7 +62,7 @@ Public Class ScriptGenerator
                     ScriptBuilder.Append(Line & vbCrLf)
                 Next
 
-                FileWrite(Directory & "\" & TableName, ScriptBuilder.ToString, False)
+                FileWrite(Directory & "\" & TableName, ScriptBuilder.ToString)
 
             End If
         Next
@@ -96,7 +96,7 @@ Public Class ScriptGenerator
                     ScriptBuilder.Append(Line & vbCrLf)
                 Next
 
-                FileWrite(Directory & "\" & ViewName, ScriptBuilder.ToString, False)
+                FileWrite(Directory & "\" & ViewName, ScriptBuilder.ToString)
 
             End If
         Next
@@ -128,7 +128,7 @@ Public Class ScriptGenerator
                     ScriptBuilder.Append(Line & vbCrLf)
                 Next
 
-                FileWrite(Directory & "\" & FunctionName, ScriptBuilder.ToString, False)
+                FileWrite(Directory & "\" & FunctionName, ScriptBuilder.ToString)
 
             End If
         Next
@@ -161,7 +161,7 @@ Public Class ScriptGenerator
                     ScriptBuilder.Append(Line & vbCrLf)
                 Next
 
-                FileWrite(Directory & "\" & ProcedureName, ScriptBuilder.ToString, False)
+                FileWrite(Directory & "\" & ProcedureName, ScriptBuilder.ToString)
 
             End If
         Next
