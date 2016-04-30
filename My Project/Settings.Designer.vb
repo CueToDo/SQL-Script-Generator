@@ -125,6 +125,66 @@ Namespace My
                 Me("ScriptLocationProcedures") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Instance() As String
+            Get
+                Return CType(Me("Instance"),String)
+            End Get
+            Set
+                Me("Instance") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ScriptTables() As Boolean
+            Get
+                Return CType(Me("ScriptTables"),Boolean)
+            End Get
+            Set
+                Me("ScriptTables") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ScriptViews() As Boolean
+            Get
+                Return CType(Me("ScriptViews"),Boolean)
+            End Get
+            Set
+                Me("ScriptViews") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ScriptFunctions() As Boolean
+            Get
+                Return CType(Me("ScriptFunctions"),Boolean)
+            End Get
+            Set
+                Me("ScriptFunctions") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ScriptProcedures() As Boolean
+            Get
+                Return CType(Me("ScriptProcedures"),Boolean)
+            End Get
+            Set
+                Me("ScriptProcedures") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

@@ -1,6 +1,5 @@
 ﻿Imports System.Collections.Specialized
 
-Imports DNSD.Functions
 Imports System.Text
 
 Public Class FormGenerateSQLScripts
@@ -8,49 +7,86 @@ Public Class FormGenerateSQLScripts
     Protected WithEvents ScriptGenerator As ScriptGenerator
     Protected TimeStart As Date
     Protected TimeSpan As TimeSpan
+    Protected ElapsedLabel As Label
 
     Private Sub FormGenerateSQLScripts_Load(sender As Object, e As EventArgs) Handles Me.Load
-
-        TextBoxRemoteServer.Text = My.Settings.Server
-        TextBoxDatabase.Text = My.Settings.DatabaseName
 
         TextBoxScriptLocationTables.Text = My.Settings.ScriptLocationTables
         TextBoxScriptLocationViews.Text = My.Settings.ScriptLocationViews
         TextBoxScriptLocationFunctions.Text = My.Settings.ScriptLocationFunctions
         TextBoxScriptLocationProcedures.Text = My.Settings.ScriptLocationProcedures
+
+        CheckBoxTables.Checked = My.Settings.ScriptTables
+        CheckBoxViews.Checked = My.Settings.ScriptViews
+        CheckBoxFunctions.Checked = My.Settings.ScriptFunctions
+        CheckBoxProcedures.Checked = My.Settings.ScriptProcedures
+
     End Sub
+
 
     Private Sub ButtonGenerate_Click(sender As Object, e As EventArgs) Handles ButtonGenerate.Click
 
         Try
             Cursor = Cursors.WaitCursor
 
-            TimeStart = Now
-            ProgressBarScripting.Value = 0
+            Dim Generate As Boolean = FormLogin.ShowDialog() = Windows.Forms.DialogResult.OK
 
-            Application.DoEvents()
+            If Generate Then
 
-            ScriptGenerator = New ScriptGenerator(TextBoxRemoteServer.Text, "", TextBoxDatabase.Text, TextBoxLogin.Text, TextBoxPassword.Text)
+                ProgressBarScripting.Value = 0
 
-            Dim Directory As String = ""
+                LabelTimeTables.Text = ""
+                LabelTimeViews.Text = ""
+                LabelTimeFunctions.Text = ""
+                LabelTimeProcedures.Text = ""
 
-            If RadioButtonScriptTables.Checked Then
-                Directory = TextBoxScriptLocationTables.Text
-                ScriptGenerator.GenerateScriptsTables(Directory)
-            ElseIf RadioButtonScriptViews.Checked Then
-                Directory = TextBoxScriptLocationViews.Text
-                ScriptGenerator.GenerateScriptsViews(Directory)
-            ElseIf RadioButtonScriptFunctions.Checked Then
-                Directory = TextBoxScriptLocationFunctions.Text
-                ScriptGenerator.GenerateScriptsFunctions(Directory)
-            ElseIf RadioButtonScriptProcedures.Checked Then
-                Directory = TextBoxScriptLocationProcedures.Text
-                ScriptGenerator.GenerateScriptsProcedures(Directory)
+                Application.DoEvents()
+
+                ScriptGenerator = New ScriptGenerator(Server, Database, Login, Password)
+
+                Dim Directory As String = ""
+
+                If CheckBoxTables.Checked Then
+                    TimeStart = Now
+                    ElapsedLabel = LabelTimeTables
+                    Directory = TextBoxScriptLocationTables.Text
+                    ScriptGenerator.GenerateScriptsTables(Directory)
+                Else
+                    LabelTimeTables.Text = ""
+                End If
+
+                If CheckBoxViews.Checked Then
+                    TimeStart = Now
+                    ElapsedLabel = LabelTimeViews
+                    Directory = TextBoxScriptLocationViews.Text
+                    ScriptGenerator.GenerateScriptsViews(Directory)
+                Else
+                    LabelTimeViews.Text = ""
+                End If
+
+                If CheckBoxFunctions.Checked Then
+                    TimeStart = Now
+                    ElapsedLabel = LabelTimeFunctions
+                    Directory = TextBoxScriptLocationFunctions.Text
+                    ScriptGenerator.GenerateScriptsFunctions(Directory)
+                Else
+                    LabelTimeFunctions.Text = ""
+                End If
+
+                If CheckBoxProcedures.Checked Then
+                    TimeStart = Now
+                    ElapsedLabel = LabelTimeProcedures
+                    Directory = TextBoxScriptLocationProcedures.Text
+                    ScriptGenerator.GenerateScriptsProcedures(Directory)
+                Else
+                    LabelTimeProcedures.Text = ""
+                End If
+
+                ToolStripStatusLabelProgress.Text = ""
+                ToolStripStatusLabelPerCentComplete.Text = ""
+                ProgressBarScripting.Value = 0
+
             End If
-
-            ToolStripStatusLabelProgress.Text = ""
-            ToolStripStatusLabelPerCentComplete.Text = ""
-            ProgressBarScripting.Value = 0
 
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Script Objects", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -74,13 +110,18 @@ Public Class FormGenerateSQLScripts
 
     Private Sub SaveSettings()
 
-        My.Settings.Server = TextBoxRemoteServer.Text
-        My.Settings.DatabaseName = TextBoxDatabase.Text
+        My.Settings.Server = Server
+        My.Settings.DatabaseName = Database
 
         My.Settings.ScriptLocationTables = TextBoxScriptLocationTables.Text
         My.Settings.ScriptLocationViews = TextBoxScriptLocationViews.Text
         My.Settings.ScriptLocationFunctions = TextBoxScriptLocationFunctions.Text
         My.Settings.ScriptLocationProcedures = TextBoxScriptLocationProcedures.Text
+
+        My.Settings.ScriptTables = CheckBoxTables.Checked
+        My.Settings.ScriptViews = CheckBoxViews.Checked
+        My.Settings.ScriptFunctions = CheckBoxFunctions.Checked
+        My.Settings.ScriptProcedures = CheckBoxProcedures.Checked
 
         My.Settings.Save()
 
@@ -126,10 +167,14 @@ Public Class FormGenerateSQLScripts
         End If
 
         TimeSpan = Now - TimeStart
-        ToolStripStatusLabelElapsed.Text = TimeSpan.Minutes & "m " & TimeSpan.Seconds & "s"
+        ElapsedLabel.Text = TimeSpan.Minutes & "m " & TimeSpan.Seconds & "s"
 
         Application.DoEvents()
 
+    End Sub
+
+    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
+        ScriptGenerator.ContinueScripting = False
     End Sub
 
 End Class

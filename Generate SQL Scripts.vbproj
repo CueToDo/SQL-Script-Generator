@@ -90,6 +90,12 @@
       <DependentUpon>FormGenerateSQLScripts.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormLogin.Designer.vb">
+      <DependentUpon>FormLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Functions.vb" />
     <Compile Include="ScriptGenerator.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -112,6 +118,9 @@
   <ItemGroup>
     <EmbeddedResource Include="FormGenerateSQLScripts.resx">
       <DependentUpon>FormGenerateSQLScripts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

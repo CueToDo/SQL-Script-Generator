@@ -1,5 +1,4 @@
-﻿Imports DNSD.Functions
-Imports System.Text
+﻿Imports System.Text
 
 Imports System.Data.SqlClient
 
@@ -14,6 +13,8 @@ Public Class ScriptGenerator
 
     'http://www.sqlteam.com/article/scripting-database-objects-using-smo-updated
 
+    Public Property ContinueScripting As Boolean = True
+
     Protected SQLConnection As SqlConnection
     Protected ServerConnection As ServerConnection
     Protected SQLServer As Server
@@ -22,7 +23,7 @@ Public Class ScriptGenerator
     Public Event ItemCount(Count As Integer)
     Public Event Processing(ObjectName As String, ItemNumber As Integer)
 
-    Public Sub New(RemoteServer As String, InstanceName As String, DatabaseName As String, Login As String, Password As String)
+    Public Sub New(RemoteServer As String, DatabaseName As String, Login As String, Password As String)
 
         SQLConnection = New SqlConnection("Data Source=" & RemoteServer & "; Initial Catalog=" & DatabaseName & "; User ID=" & Login & "; Password=" & Password & "; Pooling=True; Min Pool Size=10; Max Pool Size=200; Connect Timeout=60; Persist Security Info=True;")
 
@@ -49,6 +50,8 @@ Public Class ScriptGenerator
 
         For Each Table As Table In Database.Tables
 
+            If Not ContinueScripting Then Exit For
+
             TableName = Table.Schema & "." & Table.Name & ".SQL"
             Count += 1
             RaiseEvent Processing(TableName, Count)
@@ -65,9 +68,8 @@ Public Class ScriptGenerator
                 FileWrite(Directory & "\" & TableName, ScriptBuilder.ToString)
 
             End If
+
         Next
-
-
 
     End Sub
 
@@ -81,6 +83,8 @@ Public Class ScriptGenerator
         RaiseEvent ItemCount(Database.Views.Count)
 
         For Each View As View In Database.Views
+
+            If Not ContinueScripting Then Exit For
 
             ViewName = View.Schema & "." & View.Name & ".SQL"
             Count += 1
@@ -99,6 +103,7 @@ Public Class ScriptGenerator
                 FileWrite(Directory & "\" & ViewName, ScriptBuilder.ToString)
 
             End If
+
         Next
 
     End Sub
@@ -113,6 +118,8 @@ Public Class ScriptGenerator
         RaiseEvent ItemCount(Database.UserDefinedFunctions.Count)
 
         For Each UserDefinedFunction As UserDefinedFunction In Database.UserDefinedFunctions
+
+            If Not ContinueScripting Then Exit For
 
             FunctionName = UserDefinedFunction.Schema & "." & UserDefinedFunction.Name & ".SQL"
             Count += 1
@@ -131,6 +138,7 @@ Public Class ScriptGenerator
                 FileWrite(Directory & "\" & FunctionName, ScriptBuilder.ToString)
 
             End If
+
         Next
 
     End Sub
@@ -146,6 +154,8 @@ Public Class ScriptGenerator
         RaiseEvent ItemCount(Database.StoredProcedures.Count)
 
         For Each Procedure As StoredProcedure In Database.StoredProcedures
+
+            If Not ContinueScripting Then Exit For
 
             ProcedureName = Procedure.Schema & "." & Procedure.Name & ".SQL"
             Count += 1
@@ -164,6 +174,7 @@ Public Class ScriptGenerator
                 FileWrite(Directory & "\" & ProcedureName, ScriptBuilder.ToString)
 
             End If
+
         Next
 
     End Sub
