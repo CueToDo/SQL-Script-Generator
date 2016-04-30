@@ -182,12 +182,14 @@ Public Class ScriptGenerator
     Public Function ScriptTable(Table As Table) As StringCollection
 
         Dim Script As New StringCollection
+        Dim ScriptCreate As New StringCollection
 
         Dim scrp As Scripter = New Scripter(SQLServer)
 
         scrp.PrefetchObjects = True 'some sources suggest this may speed things up
 
         With scrp.Options
+            .AnsiPadding = True
             .ScriptDrops = False
             .WithDependencies = False
             .Indexes = True
@@ -196,16 +198,34 @@ Public Class ScriptGenerator
             .FullTextIndexes = True
             .NoCollation = False
             .Bindings = True
-            .IncludeIfNotExists = False
             .ScriptBatchTerminator = True
             .ExtendedProperties = True
+            .IncludeIfNotExists = True
+            .ScriptDrops = True
         End With
 
         'Check if the Table is not a system object
         If Table IsNot Nothing AndAlso Not Table.IsSystemObject Then
+
             Dim urns As New List(Of Urn)
             urns.Add(Table.Urn)
-            Script = scrp.Script(urns.ToArray())
+
+            If scrp.Options.ScriptDrops Then
+                scrp.Options.IncludeIfNotExists = True
+                Script = scrp.Script(urns.ToArray())
+                Script.Add(vbNewLine)
+            End If
+
+            'ALWAYS Create
+            scrp.Options.ScriptDrops = False
+            scrp.Options.IncludeIfNotExists = False
+
+            ScriptCreate = scrp.Script(urns.ToArray())
+
+            For Each line As String In ScriptCreate
+                Script.Add(line)
+            Next
+
         End If
 
         Return Script

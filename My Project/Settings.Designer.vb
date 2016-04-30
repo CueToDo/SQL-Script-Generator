@@ -128,18 +128,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property Instance() As String
-            Get
-                Return CType(Me("Instance"),String)
-            End Get
-            Set
-                Me("Instance") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property ScriptTables() As Boolean
             Get
@@ -183,6 +171,54 @@ Namespace My
             End Get
             Set
                 Me("ScriptProcedures") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GeneralANSIPaddings() As Boolean
+            Get
+                Return CType(Me("GeneralANSIPaddings"),Boolean)
+            End Get
+            Set
+                Me("GeneralANSIPaddings") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GeneralScriptDROPAsWellAsCREATE() As Boolean
+            Get
+                Return CType(Me("GeneralScriptDROPAsWellAsCREATE"),Boolean)
+            End Get
+            Set
+                Me("GeneralScriptDROPAsWellAsCREATE") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property TableScriptIndexes() As Boolean
+            Get
+                Return CType(Me("TableScriptIndexes"),Boolean)
+            End Get
+            Set
+                Me("TableScriptIndexes") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GeneralIncludeDescriptiveHeaders() As Boolean
+            Get
+                Return CType(Me("GeneralIncludeDescriptiveHeaders"),Boolean)
+            End Get
+            Set
+                Me("GeneralIncludeDescriptiveHeaders") = value
             End Set
         End Property
     End Class
