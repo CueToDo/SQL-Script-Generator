@@ -177,4 +177,8 @@ Public Class FormGenerateSQLScripts
         ScriptGenerator.ContinueScripting = False
     End Sub
 
+    Private Sub ButtonSettings_Click(sender As Object, e As EventArgs) Handles ButtonSettings.Click
+        FormSettings.ShowDialog()
+    End Sub
+
 End Class

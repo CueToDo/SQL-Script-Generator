@@ -25,6 +25,14 @@ Partial Class FormGenerateSQLScripts
         Me.ButtonExit = New System.Windows.Forms.Button()
         Me.ButtonGenerate = New System.Windows.Forms.Button()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
+        Me.LabelTimeProcedures = New System.Windows.Forms.Label()
+        Me.LabelTimeFunctions = New System.Windows.Forms.Label()
+        Me.LabelTimeViews = New System.Windows.Forms.Label()
+        Me.LabelTimeTables = New System.Windows.Forms.Label()
+        Me.CheckBoxProcedures = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxFunctions = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxViews = New System.Windows.Forms.CheckBox()
+        Me.CheckBoxTables = New System.Windows.Forms.CheckBox()
         Me.ButtonScriptLocationProcedures = New System.Windows.Forms.Button()
         Me.ButtonScriptLocationFunctions = New System.Windows.Forms.Button()
         Me.ButtonScriptLocationViews = New System.Windows.Forms.Button()
@@ -38,15 +46,8 @@ Partial Class FormGenerateSQLScripts
         Me.ToolStripStatusLabelPerCentComplete = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ToolStripStatusLabelProgress = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ProgressBarScripting = New System.Windows.Forms.ProgressBar()
-        Me.CheckBoxTables = New System.Windows.Forms.CheckBox()
-        Me.CheckBoxViews = New System.Windows.Forms.CheckBox()
-        Me.CheckBoxFunctions = New System.Windows.Forms.CheckBox()
-        Me.CheckBoxProcedures = New System.Windows.Forms.CheckBox()
         Me.ButtonCancel = New System.Windows.Forms.Button()
-        Me.LabelTimeTables = New System.Windows.Forms.Label()
-        Me.LabelTimeViews = New System.Windows.Forms.Label()
-        Me.LabelTimeFunctions = New System.Windows.Forms.Label()
-        Me.LabelTimeProcedures = New System.Windows.Forms.Label()
+        Me.ButtonSettings = New System.Windows.Forms.Button()
         Me.GroupBox3.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -93,6 +94,82 @@ Partial Class FormGenerateSQLScripts
         Me.GroupBox3.TabIndex = 2
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Script"
+        '
+        'LabelTimeProcedures
+        '
+        Me.LabelTimeProcedures.AutoSize = True
+        Me.LabelTimeProcedures.Location = New System.Drawing.Point(766, 126)
+        Me.LabelTimeProcedures.Name = "LabelTimeProcedures"
+        Me.LabelTimeProcedures.Size = New System.Drawing.Size(46, 17)
+        Me.LabelTimeProcedures.TabIndex = 19
+        Me.LabelTimeProcedures.Text = "0m 0s"
+        '
+        'LabelTimeFunctions
+        '
+        Me.LabelTimeFunctions.AutoSize = True
+        Me.LabelTimeFunctions.Location = New System.Drawing.Point(766, 96)
+        Me.LabelTimeFunctions.Name = "LabelTimeFunctions"
+        Me.LabelTimeFunctions.Size = New System.Drawing.Size(46, 17)
+        Me.LabelTimeFunctions.TabIndex = 18
+        Me.LabelTimeFunctions.Text = "0m 0s"
+        '
+        'LabelTimeViews
+        '
+        Me.LabelTimeViews.AutoSize = True
+        Me.LabelTimeViews.Location = New System.Drawing.Point(766, 69)
+        Me.LabelTimeViews.Name = "LabelTimeViews"
+        Me.LabelTimeViews.Size = New System.Drawing.Size(46, 17)
+        Me.LabelTimeViews.TabIndex = 17
+        Me.LabelTimeViews.Text = "0m 0s"
+        '
+        'LabelTimeTables
+        '
+        Me.LabelTimeTables.AutoSize = True
+        Me.LabelTimeTables.Location = New System.Drawing.Point(766, 38)
+        Me.LabelTimeTables.Name = "LabelTimeTables"
+        Me.LabelTimeTables.Size = New System.Drawing.Size(46, 17)
+        Me.LabelTimeTables.TabIndex = 16
+        Me.LabelTimeTables.Text = "0m 0s"
+        '
+        'CheckBoxProcedures
+        '
+        Me.CheckBoxProcedures.AutoSize = True
+        Me.CheckBoxProcedures.Location = New System.Drawing.Point(17, 124)
+        Me.CheckBoxProcedures.Name = "CheckBoxProcedures"
+        Me.CheckBoxProcedures.Size = New System.Drawing.Size(103, 21)
+        Me.CheckBoxProcedures.TabIndex = 15
+        Me.CheckBoxProcedures.Text = "Procedures"
+        Me.CheckBoxProcedures.UseVisualStyleBackColor = True
+        '
+        'CheckBoxFunctions
+        '
+        Me.CheckBoxFunctions.AutoSize = True
+        Me.CheckBoxFunctions.Location = New System.Drawing.Point(17, 96)
+        Me.CheckBoxFunctions.Name = "CheckBoxFunctions"
+        Me.CheckBoxFunctions.Size = New System.Drawing.Size(91, 21)
+        Me.CheckBoxFunctions.TabIndex = 14
+        Me.CheckBoxFunctions.Text = "Functions"
+        Me.CheckBoxFunctions.UseVisualStyleBackColor = True
+        '
+        'CheckBoxViews
+        '
+        Me.CheckBoxViews.AutoSize = True
+        Me.CheckBoxViews.Location = New System.Drawing.Point(17, 68)
+        Me.CheckBoxViews.Name = "CheckBoxViews"
+        Me.CheckBoxViews.Size = New System.Drawing.Size(66, 21)
+        Me.CheckBoxViews.TabIndex = 13
+        Me.CheckBoxViews.Text = "Views"
+        Me.CheckBoxViews.UseVisualStyleBackColor = True
+        '
+        'CheckBoxTables
+        '
+        Me.CheckBoxTables.AutoSize = True
+        Me.CheckBoxTables.Location = New System.Drawing.Point(17, 38)
+        Me.CheckBoxTables.Name = "CheckBoxTables"
+        Me.CheckBoxTables.Size = New System.Drawing.Size(73, 21)
+        Me.CheckBoxTables.TabIndex = 12
+        Me.CheckBoxTables.Text = "Tables"
+        Me.CheckBoxTables.UseVisualStyleBackColor = True
         '
         'ButtonScriptLocationProcedures
         '
@@ -188,48 +265,8 @@ Partial Class FormGenerateSQLScripts
         '
         Me.ProgressBarScripting.Location = New System.Drawing.Point(12, 179)
         Me.ProgressBarScripting.Name = "ProgressBarScripting"
-        Me.ProgressBarScripting.Size = New System.Drawing.Size(609, 23)
+        Me.ProgressBarScripting.Size = New System.Drawing.Size(522, 23)
         Me.ProgressBarScripting.TabIndex = 11
-        '
-        'CheckBoxTables
-        '
-        Me.CheckBoxTables.AutoSize = True
-        Me.CheckBoxTables.Location = New System.Drawing.Point(17, 38)
-        Me.CheckBoxTables.Name = "CheckBoxTables"
-        Me.CheckBoxTables.Size = New System.Drawing.Size(73, 21)
-        Me.CheckBoxTables.TabIndex = 12
-        Me.CheckBoxTables.Text = "Tables"
-        Me.CheckBoxTables.UseVisualStyleBackColor = True
-        '
-        'CheckBoxViews
-        '
-        Me.CheckBoxViews.AutoSize = True
-        Me.CheckBoxViews.Location = New System.Drawing.Point(17, 68)
-        Me.CheckBoxViews.Name = "CheckBoxViews"
-        Me.CheckBoxViews.Size = New System.Drawing.Size(66, 21)
-        Me.CheckBoxViews.TabIndex = 13
-        Me.CheckBoxViews.Text = "Views"
-        Me.CheckBoxViews.UseVisualStyleBackColor = True
-        '
-        'CheckBoxFunctions
-        '
-        Me.CheckBoxFunctions.AutoSize = True
-        Me.CheckBoxFunctions.Location = New System.Drawing.Point(17, 96)
-        Me.CheckBoxFunctions.Name = "CheckBoxFunctions"
-        Me.CheckBoxFunctions.Size = New System.Drawing.Size(91, 21)
-        Me.CheckBoxFunctions.TabIndex = 14
-        Me.CheckBoxFunctions.Text = "Functions"
-        Me.CheckBoxFunctions.UseVisualStyleBackColor = True
-        '
-        'CheckBoxProcedures
-        '
-        Me.CheckBoxProcedures.AutoSize = True
-        Me.CheckBoxProcedures.Location = New System.Drawing.Point(17, 124)
-        Me.CheckBoxProcedures.Name = "CheckBoxProcedures"
-        Me.CheckBoxProcedures.Size = New System.Drawing.Size(103, 21)
-        Me.CheckBoxProcedures.TabIndex = 15
-        Me.CheckBoxProcedures.Text = "Procedures"
-        Me.CheckBoxProcedures.UseVisualStyleBackColor = True
         '
         'ButtonCancel
         '
@@ -240,47 +277,21 @@ Partial Class FormGenerateSQLScripts
         Me.ButtonCancel.Text = "Cancel"
         Me.ButtonCancel.UseVisualStyleBackColor = True
         '
-        'LabelTimeTables
+        'ButtonSettings
         '
-        Me.LabelTimeTables.AutoSize = True
-        Me.LabelTimeTables.Location = New System.Drawing.Point(766, 38)
-        Me.LabelTimeTables.Name = "LabelTimeTables"
-        Me.LabelTimeTables.Size = New System.Drawing.Size(46, 17)
-        Me.LabelTimeTables.TabIndex = 16
-        Me.LabelTimeTables.Text = "0m 0s"
-        '
-        'LabelTimeViews
-        '
-        Me.LabelTimeViews.AutoSize = True
-        Me.LabelTimeViews.Location = New System.Drawing.Point(766, 69)
-        Me.LabelTimeViews.Name = "LabelTimeViews"
-        Me.LabelTimeViews.Size = New System.Drawing.Size(46, 17)
-        Me.LabelTimeViews.TabIndex = 17
-        Me.LabelTimeViews.Text = "0m 0s"
-        '
-        'LabelTimeFunctions
-        '
-        Me.LabelTimeFunctions.AutoSize = True
-        Me.LabelTimeFunctions.Location = New System.Drawing.Point(766, 96)
-        Me.LabelTimeFunctions.Name = "LabelTimeFunctions"
-        Me.LabelTimeFunctions.Size = New System.Drawing.Size(46, 17)
-        Me.LabelTimeFunctions.TabIndex = 18
-        Me.LabelTimeFunctions.Text = "0m 0s"
-        '
-        'LabelTimeProcedures
-        '
-        Me.LabelTimeProcedures.AutoSize = True
-        Me.LabelTimeProcedures.Location = New System.Drawing.Point(766, 126)
-        Me.LabelTimeProcedures.Name = "LabelTimeProcedures"
-        Me.LabelTimeProcedures.Size = New System.Drawing.Size(46, 17)
-        Me.LabelTimeProcedures.TabIndex = 19
-        Me.LabelTimeProcedures.Text = "0m 0s"
+        Me.ButtonSettings.Location = New System.Drawing.Point(540, 179)
+        Me.ButtonSettings.Name = "ButtonSettings"
+        Me.ButtonSettings.Size = New System.Drawing.Size(81, 23)
+        Me.ButtonSettings.TabIndex = 13
+        Me.ButtonSettings.Text = "Settings"
+        Me.ButtonSettings.UseVisualStyleBackColor = True
         '
         'FormGenerateSQLScripts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(894, 238)
+        Me.Controls.Add(Me.ButtonSettings)
         Me.Controls.Add(Me.ButtonCancel)
         Me.Controls.Add(Me.ProgressBarScripting)
         Me.Controls.Add(Me.StatusStrip1)
@@ -322,5 +333,6 @@ Partial Class FormGenerateSQLScripts
     Friend WithEvents LabelTimeFunctions As System.Windows.Forms.Label
     Friend WithEvents LabelTimeViews As System.Windows.Forms.Label
     Friend WithEvents LabelTimeTables As System.Windows.Forms.Label
+    Friend WithEvents ButtonSettings As System.Windows.Forms.Button
 
 End Class

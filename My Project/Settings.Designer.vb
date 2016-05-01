@@ -177,18 +177,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property GeneralANSIPaddings() As Boolean
-            Get
-                Return CType(Me("GeneralANSIPaddings"),Boolean)
-            End Get
-            Set
-                Me("GeneralANSIPaddings") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
         Public Property GeneralScriptDROPAsWellAsCREATE() As Boolean
             Get
                 Return CType(Me("GeneralScriptDROPAsWellAsCREATE"),Boolean)
@@ -201,24 +189,60 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property TableScriptIndexes() As Boolean
+        Public Property GeneralScriptDescriptiveHeaders() As Boolean
             Get
-                Return CType(Me("TableScriptIndexes"),Boolean)
+                Return CType(Me("GeneralScriptDescriptiveHeaders"),Boolean)
             End Get
             Set
-                Me("TableScriptIndexes") = value
+                Me("GeneralScriptDescriptiveHeaders") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property GeneralIncludeDescriptiveHeaders() As Boolean
+        Public Property GeneralSchemaQualifyObjectNames() As Boolean
             Get
-                Return CType(Me("GeneralIncludeDescriptiveHeaders"),Boolean)
+                Return CType(Me("GeneralSchemaQualifyObjectNames"),Boolean)
             End Get
             Set
-                Me("GeneralIncludeDescriptiveHeaders") = value
+                Me("GeneralSchemaQualifyObjectNames") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GeneralScriptPermissions() As Boolean
+            Get
+                Return CType(Me("GeneralScriptPermissions"),Boolean)
+            End Get
+            Set
+                Me("GeneralScriptPermissions") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property GeneralScriptOwner() As Boolean
+            Get
+                Return CType(Me("GeneralScriptOwner"),Boolean)
+            End Get
+            Set
+                Me("GeneralScriptOwner") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property TableScriptCollation() As Boolean
+            Get
+                Return CType(Me("TableScriptCollation"),Boolean)
+            End Get
+            Set
+                Me("TableScriptCollation") = value
             End Set
         End Property
     End Class

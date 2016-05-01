@@ -19,6 +19,7 @@ Public Class ScriptGenerator
     Protected ServerConnection As ServerConnection
     Protected SQLServer As Server
     Protected Database As Database
+    Protected Directory As String
 
     Public Event ItemCount(Count As Integer)
     Public Event Processing(ObjectName As String, ItemNumber As Integer)
@@ -41,8 +42,8 @@ Public Class ScriptGenerator
 
     Public Sub GenerateScriptsTables(Directory As String)
 
-        Dim Script As StringCollection
-        Dim ScriptBuilder As StringBuilder
+        Me.Directory = Directory
+
         Dim TableName As String
         Dim Count As Integer = 0
 
@@ -54,20 +55,9 @@ Public Class ScriptGenerator
 
             TableName = Table.Schema & "." & Table.Name & ".SQL"
             Count += 1
+
             RaiseEvent Processing(TableName, Count)
-
-            If Not Table.IsSystemObject Then
-
-                Script = ScriptTable(Table)
-                ScriptBuilder = New StringBuilder
-
-                For Each Line As String In Script
-                    ScriptBuilder.Append(Line & vbCrLf)
-                Next
-
-                FileWrite(Directory & "\" & TableName, ScriptBuilder.ToString)
-
-            End If
+            ScriptDatabaseObject(Table, TableName, Count)
 
         Next
 
@@ -75,8 +65,8 @@ Public Class ScriptGenerator
 
     Public Sub GenerateScriptsViews(Directory As String)
 
-        Dim Script As StringCollection
-        Dim ScriptBuilder As StringBuilder
+        Me.Directory = Directory
+
         Dim ViewName As String
         Dim Count As Integer = 0
 
@@ -91,18 +81,7 @@ Public Class ScriptGenerator
 
             RaiseEvent Processing(ViewName, Count)
 
-            If Not View.IsSystemObject Then
-
-                Script = ScriptView(View)
-                ScriptBuilder = New StringBuilder
-
-                For Each Line As String In Script
-                    ScriptBuilder.Append(Line & vbCrLf)
-                Next
-
-                FileWrite(Directory & "\" & ViewName, ScriptBuilder.ToString)
-
-            End If
+            ScriptDatabaseObject(View, ViewName, Count)
 
         Next
 
@@ -110,8 +89,8 @@ Public Class ScriptGenerator
 
     Public Sub GenerateScriptsFunctions(Directory As String)
 
-        Dim Script As StringCollection
-        Dim ScriptBuilder As StringBuilder
+        Me.Directory = Directory
+
         Dim FunctionName As String
         Dim Count As Integer = 0
 
@@ -126,18 +105,7 @@ Public Class ScriptGenerator
 
             RaiseEvent Processing(FunctionName, Count)
 
-            If Not UserDefinedFunction.IsSystemObject Then
-
-                Script = ScriptFunction(UserDefinedFunction)
-                ScriptBuilder = New StringBuilder
-
-                For Each Line As String In Script
-                    ScriptBuilder.Append(Line & vbCrLf)
-                Next
-
-                FileWrite(Directory & "\" & FunctionName, ScriptBuilder.ToString)
-
-            End If
+            ScriptDatabaseObject(UserDefinedFunction, FunctionName, Count)
 
         Next
 
@@ -145,14 +113,14 @@ Public Class ScriptGenerator
 
     Public Sub GenerateScriptsProcedures(Directory As String)
 
-        Dim Script As StringCollection
-        Dim ScriptBuilder As StringBuilder
+        Me.Directory = Directory
+
         Dim ProcedureName As String
         Dim Count As Integer = 0
 
-        'Iterate through the stored procedures in database and script each one. 
         RaiseEvent ItemCount(Database.StoredProcedures.Count)
 
+        'Iterate through the stored procedures in database and script each one. 
         For Each Procedure As StoredProcedure In Database.StoredProcedures
 
             If Not ContinueScripting Then Exit For
@@ -162,24 +130,13 @@ Public Class ScriptGenerator
 
             RaiseEvent Processing(ProcedureName, Count)
 
-            If Not Procedure.IsSystemObject Then
-
-                Script = ScriptProcedure(Procedure)
-                ScriptBuilder = New StringBuilder
-
-                For Each Line As String In Script
-                    ScriptBuilder.Append(Line & vbCrLf)
-                Next
-
-                FileWrite(Directory & "\" & ProcedureName, ScriptBuilder.ToString)
-
-            End If
+            ScriptDatabaseObject(Procedure, ProcedureName, Count)
 
         Next
 
     End Sub
 
-    Public Function ScriptTable(Table As Table) As StringCollection
+    Public Sub ScriptDatabaseObject(DatabaseObject As Object, ProcedureName As String, Count As Integer)
 
         Dim Script As New StringCollection
         Dim ScriptCreate As New StringCollection
@@ -188,28 +145,19 @@ Public Class ScriptGenerator
 
         scrp.PrefetchObjects = True 'some sources suggest this may speed things up
 
-        With scrp.Options
-            .AnsiPadding = True
-            .ScriptDrops = False
-            .WithDependencies = False
-            .Indexes = True
-            .DriAllConstraints = True 'to include referential constraints in the script
-            .Triggers = True
-            .FullTextIndexes = True
-            .NoCollation = False
-            .Bindings = True
-            .ScriptBatchTerminator = True
-            .ExtendedProperties = True
-            .IncludeIfNotExists = True
-            .ScriptDrops = True
-        End With
+        SetGeneralOptions(scrp.Options)
+
+        If TypeOf (DatabaseObject) Is Table OrElse TypeOf (DatabaseObject) Is View Then
+            SetTableAndViewOptions(scrp.Options)
+        End If
 
         'Check if the Table is not a system object
-        If Table IsNot Nothing AndAlso Not Table.IsSystemObject Then
+        If DatabaseObject IsNot Nothing AndAlso Not DatabaseObject.IsSystemObject Then
 
             Dim urns As New List(Of Urn)
-            urns.Add(Table.Urn)
+            urns.Add(DatabaseObject.Urn)
 
+            'OPTIONAL Drop
             If scrp.Options.ScriptDrops Then
                 scrp.Options.IncludeIfNotExists = True
                 Script = scrp.Script(urns.ToArray())
@@ -228,111 +176,55 @@ Public Class ScriptGenerator
 
         End If
 
-        Return Script
+        Dim ScriptBuilder As New StringBuilder
 
-    End Function
+        For Each Line As String In Script
+            ScriptBuilder.Append(Line & vbCrLf)
+        Next
 
-    Public Function ScriptView(View As View) As StringCollection
+        FileWrite(Directory & "\" & ProcedureName, ScriptBuilder.ToString)
 
-        Dim Script As New StringCollection
+    End Sub
 
-        Dim scrp As Scripter = New Scripter(SQLServer)
+    Protected Sub SetGeneralOptions(Options As ScriptingOptions)
 
-        scrp.PrefetchObjects = True 'some sources suggest this may speed things up
+        With Options
 
-        With scrp.Options
-            .ScriptDrops = False
-            .WithDependencies = False
+            'No user setting
+            '.IncludeIfNotExists = True for Drop, False for Create
+            .WithDependencies = False 'ALL objects are scripted
+            .ExtendedProperties = True 'If added, you get them
+            .AnsiPadding = True 'http://stackoverflow.com/questions/3566948/sql-server-ansi-padding
+            'In a future version of MicrosoftSQL Server ANSI_PADDING will always be ON 
+            'and any applications that explicitly set the option to OFF will produce an error. 
+            'Avoid using this feature in new development work, and plan to modify applications that currently use this feature.
+
+            'User Settings
+            .IncludeHeaders = My.Settings.GeneralScriptDescriptiveHeaders
+            .ScriptDrops = My.Settings.GeneralScriptDROPAsWellAsCREATE
+            .SchemaQualify = My.Settings.GeneralSchemaQualifyObjectNames
+            .Permissions = My.Settings.GeneralScriptPermissions
+            .ScriptOwner = My.Settings.GeneralScriptOwner
+
+        End With
+
+    End Sub
+
+    Protected Sub SetTableAndViewOptions(Options As ScriptingOptions)
+
+        With Options
+            .NoCollation = Not My.Settings.TableScriptCollation
+            .DriPrimaryKey = True
+            .DriForeignKeys = True
+            .DriUniqueKeys = True
             .Indexes = True
-            .DriAllConstraints = True 'to include referential constraints in the script
+            .FullTextIndexes = True
+            .Default = True
+            .DriChecks = True
+            .DriAllConstraints = True
             .Triggers = True
-            .FullTextIndexes = True
-            .NoCollation = False
-            .Bindings = True
-            .IncludeIfNotExists = False
-            .ScriptBatchTerminator = True
-            .ExtendedProperties = True
         End With
 
-
-
-        'Check if the Table is not a system object
-        If View IsNot Nothing AndAlso Not View.IsSystemObject Then
-            Dim urns As New List(Of Urn)
-            urns.Add(View.Urn)
-            Script = scrp.Script(urns.ToArray())
-        End If
-
-        Return Script
-
-    End Function
-
-    Public Function ScriptFunction(UserDefinedFunction As UserDefinedFunction) As StringCollection
-
-        Dim Script As New StringCollection
-
-        Dim scrp As Scripter = New Scripter(SQLServer)
-
-        scrp.PrefetchObjects = True 'some sources suggest this may speed things up
-
-        With scrp.Options
-            .ScriptDrops = False
-            .WithDependencies = False
-            .Indexes = True
-            .DriAllConstraints = True 'to include referential constraints in the script
-            .Triggers = True
-            .FullTextIndexes = True
-            .NoCollation = False
-            .Bindings = True
-            .IncludeIfNotExists = False
-            .ScriptBatchTerminator = True
-            .ExtendedProperties = True
-        End With
-
-        'Check if the Table is not a system object
-        If UserDefinedFunction IsNot Nothing AndAlso Not UserDefinedFunction.IsSystemObject Then
-            Dim urns As New List(Of Urn)
-            urns.Add(UserDefinedFunction.Urn)
-            Script = scrp.Script(urns.ToArray())
-        End If
-
-        Return Script
-
-    End Function
-
-    Public Function ScriptProcedure(Procedure As StoredProcedure) As StringCollection
-
-        Dim Script As New StringCollection
-
-        Dim scrp As Scripter = New Scripter(SQLServer)
-
-        scrp.PrefetchObjects = True 'some sources suggest this may speed things up
-
-        With scrp.Options
-            .ScriptDrops = False
-            .WithDependencies = False
-            .Indexes = False
-            .DriAllConstraints = False 'to include referential constraints in the script
-            .Triggers = False
-            .FullTextIndexes = True
-            .NoCollation = False
-            .Bindings = True
-            .IncludeIfNotExists = False
-            .ScriptBatchTerminator = True
-            .ExtendedProperties = True
-        End With
-
-        'check if the procedure is not a system object
-        If Procedure IsNot Nothing AndAlso Not Procedure.IsSystemObject Then
-            Dim urns As New List(Of Urn)
-            urns.Add(Procedure.Urn)
-            Script = scrp.Script(urns.ToArray())
-        End If
-
-        Return Script
-
-    End Function
-
-
+    End Sub
 
 End Class
